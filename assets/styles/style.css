@@ -1,0 +1,111 @@
+
+body.bg-dark {
+  background: linear-gradient(160deg, #121212, #1e1e1e) !important;
+}
+
+
+.navbar {
+  border-bottom: 0.5px solid rgb(98, 96, 96); 
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #2d38ce, #a057df, #d3bfe8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.2px rgb(211, 156, 207);
+}
+
+.navbar .nav-link {
+  font-size: 14px; 
+}
+
+.navbar .btn {
+  font-size: 14px;
+}
+
+
+.btn-standard {
+  width: 220px;
+  align-self: center;
+}
+
+
+.footer {
+  border-top: 0.5px solid rgb(98, 96, 96); 
+}
+
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+
+.transactions-container {
+  max-width: 800px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  flex-direction: row; 
+}
+
+.list-group-item span {
+  display: inline-block;
+}
+
+.list-group-item span:last-child {
+  margin-top: 0; 
+}
+
+
+.list-group-item .amount-positive {
+  color: green !important;
+  font-weight: bold;
+}
+
+.list-group-item .amount-negative {
+  color: red !important;
+  font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+ 
+  .navbar .nav-link {
+    font-size: 12px;
+  }
+
+
+  .transactions-container {
+    padding: 0.5rem;
+    width: 95%;
+  }
+
+  
+  .list-group-item {
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 0.5rem;
+  }
+
+  .list-group-item span {
+    display: block; 
+  }
+
+  .list-group-item span:last-child {
+    margin-top: 0.3rem;
+  }
+}
+
