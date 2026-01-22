@@ -56,9 +56,11 @@
     </nav>
     <main class="container mt-4 flex-grow-1">
       <h1 class="mb-4">Depósito de fondos</h1>
+      <div id="alert-container"></div>
+      <p id="currentBalanceText"></p>
       <div class="deposit-container">
         <p>Saldo actual: <span id="currentBalance"></span></p>
-        <p id="depositMessage" style="color: green"></p>
+        <p id="depositMessage" class="text-success mt-2"></p>
         <form>
           <div class="mb-4">
             <label for="depositAmount" class="mb-2">Monto a depositar:</label>

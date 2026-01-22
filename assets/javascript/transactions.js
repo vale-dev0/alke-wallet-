@@ -1,58 +1,71 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const transactionsList = document.getElementById("transactionsList");
-  const currentBalance = document.getElementById("currentBalance");
+$(document).ready(function () {
+  const $transactionsList = $("#transactionsList");
+  const $currentBalance = $("#currentBalance");
+  const $filterType = $("#filterType");
 
-  let balance = Number(localStorage.getItem("balance")) || 0;
-  currentBalance.textContent = balance.toLocaleString("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    minimumFractionDigits: 0,
+  const balance = Number(localStorage.getItem("balance")) || 0;
+  const listaTransacciones =
+    JSON.parse(localStorage.getItem("transactions")) || [];
+
+  $currentBalance.text(
+    balance.toLocaleString("es-CL", {
+      style: "currency",
+      currency: "CLP",
+      minimumFractionDigits: 0,
+    }),
+  );
+
+  mostrarUltimosMovimientos("todos");
+
+  $filterType.on("change", function () {
+    mostrarUltimosMovimientos($(this).val());
   });
 
-  let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  function mostrarUltimosMovimientos(filtro) {
+    $transactionsList.empty();
 
-  if (transactions.length === 0) {
-    const li = document.createElement("li");
-    li.className = "list-group-item text-center";
-    li.textContent = "No hay movimientos registrados";
-    transactionsList.appendChild(li);
-  } else {
-    transactions
+    const filtradas =
+      filtro === "todos"
+        ? listaTransacciones
+        : listaTransacciones.filter((t) => normalizarTipo(t.type) === filtro);
+
+    if (filtradas.length === 0) {
+      $transactionsList.append(`
+        <li class="list-group-item text-center">
+          No hay movimientos para este tipo
+        </li>
+      `);
+      return;
+    }
+
+    filtradas
       .slice()
       .reverse()
       .forEach((t) => {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between";
-
-        const text = document.createElement("span");
-        text.textContent = `${t.type} - ${t.description}`;
-
-        const amount = document.createElement("span");
-
-        const formattedAmount = t.amount.toLocaleString("es-CL", {
+        const monto = t.amount.toLocaleString("es-CL", {
           style: "currency",
           currency: "CLP",
           minimumFractionDigits: 0,
         });
 
-        if (t.type === "Transferencia") {
-          amount.textContent = `-${formattedAmount}`;
-          amount.classList.add("amount-negative"); // rojo
-        } else {
-          amount.textContent = `+${formattedAmount}`;
-          amount.classList.add("amount-positive"); // verde
-        }
+        const esTransferencia = t.type === "Transferencia";
 
-        li.appendChild(text);
-        li.appendChild(amount);
-        transactionsList.appendChild(li);
+        $transactionsList.append(`
+          <li class="list-group-item d-flex justify-content-between">
+            <span>${t.type} - ${t.description}</span>
+            <span class="${
+              esTransferencia ? "amount-negative" : "amount-positive"
+            }">
+              ${esTransferencia ? "-" : "+"}${monto}
+            </span>
+          </li>
+        `);
       });
   }
 
-  const msg = sessionStorage.getItem("transactionMessage");
-  if (msg) {
-    $("#transactionMessage").text(msg).fadeIn();
-
-    sessionStorage.removeItem("transactionMessage");
+  function normalizarTipo(tipo) {
+    if (tipo === "Depósito") return "deposito";
+    if (tipo === "Transferencia") return "transferencia";
+    return "";
   }
 });

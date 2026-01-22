@@ -34,22 +34,47 @@ passwordInput.on("input", function () {
 
 form.on("submit", function (event) {
   event.preventDefault();
+
   if (!disableButton) {
     const email = emailInput.val().trim();
     const password = passwordInput.val();
-
     const savedUser = JSON.parse(localStorage.getItem("user"));
 
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    );
+
+    $("#alert-container").empty();
+
     if (!savedUser) {
-      alert("No hay usuarios registrados. Regístrate primero.");
+      $("#alert-container").html(`
+        <div class="alert alert-warning mt-3">
+          No hay usuarios registrados. Regístrate primero.
+        </div>
+      `);
       return;
     }
 
     if (email === savedUser.email && password === savedUser.password) {
-      alert("Login exitoso!");
-      window.location.href = "pages/dashboard.html";
+      $("#alert-container").html(`
+        <div class="alert alert-success mt-3">
+          Login exitoso. Redirigiendo...
+        </div>
+      `);
+
+      setTimeout(() => {
+        window.location.href = "pages/dashboard.html";
+      }, 1500);
     } else {
-      alert("Email o contraseña incorrectos");
+      $("#alert-container").html(`
+        <div class="alert alert-danger mt-3">
+          Email o contraseña incorrectos
+        </div>
+      `);
     }
   }
 });

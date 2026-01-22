@@ -14,6 +14,15 @@ const sendMoneyBtn = document.getElementById("sendMoneyBtn");
 let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
 let selectedIndex = null;
 
+function validarRUT(rut) {
+  const rutRegex = /^(\d{7,8})-([\dkK])$/;
+  return rutRegex.test(rut);
+}
+
+function validarAlias(alias) {
+  return alias.length >= 3;
+}
+
 addContactBtn?.addEventListener("click", () => {
   newContactForm.classList.toggle("d-none");
 });
@@ -50,12 +59,22 @@ renderContacts();
 
 saveContactBtn?.addEventListener("click", () => {
   if (
-    !contactName.value ||
-    !contactRUT.value ||
-    !contactAlias.value ||
-    !contactBank.value
+    !contactName.value.trim() ||
+    !contactRUT.value.trim() ||
+    !contactAlias.value.trim() ||
+    !contactBank.value.trim()
   ) {
-    alert("Completa todos los campos");
+    alert("Todos los campos son obligatorios");
+    return;
+  }
+
+  if (!validarRUT(contactRUT.value.trim())) {
+    alert("El RUT no tiene un formato válido (ej: 12345678-9)");
+    return;
+  }
+
+  if (!validarAlias(contactAlias.value.trim())) {
+    alert("El alias debe tener al menos 3 caracteres");
     return;
   }
 

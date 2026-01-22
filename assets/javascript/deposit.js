@@ -48,12 +48,26 @@ $(document).ready(function () {
     });
     localStorage.setItem("transactions", JSON.stringify(transactions));
 
-    $depositMessage
-      .css("color", "green")
-      .text(
-        `Depósito de ${amount.toLocaleString("es-CL", { style: "currency", currency: "CLP", minimumFractionDigits: 0 })} realizado. Nuevo saldo: ${balance.toLocaleString("es-CL", { style: "currency", currency: "CLP", minimumFractionDigits: 0 })}`,
-      );
+    $("#alert-container").html(`
+  <div class="alert alert-success mt-3">
+    ✅ Depósito de ${amount.toLocaleString("es-CL", {
+      style: "currency",
+      currency: "CLP",
+      minimumFractionDigits: 0,
+    })} realizado correctamente.<br>
+    Nuevo saldo: ${balance.toLocaleString("es-CL", {
+      style: "currency",
+      currency: "CLP",
+      minimumFractionDigits: 0,
+    })}
+  </div>
+
+`);
 
     $depositInput.val("");
   });
+
+  setTimeout(function () {
+    window.location.href = "dashboard.html";
+  }, 4000);
 });
